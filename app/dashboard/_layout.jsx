@@ -2,15 +2,15 @@ import React from 'react';
 import { Stack } from "expo-router/stack";
 
 
-const Layout = () => {
+const DashboardLayout = () => {
     return (
         <Stack >
-            <Stack.Screen name='comptes/[id]' options={{ title: "Informations du compte" }} />
-            <Stack.Screen name='index' options={{ title: "Dashboard" }} />
-
+            <Stack.Screen name='index' options={{ headerBackVisible: false, title: "Dashboard" }} />
+            <Stack.Screen name='categories' options={{ title: "Catégories" }} />
+            <Stack.Screen name='achats' options={{ title: "Achats" }} />
         </Stack>
     );
 }
 
 
-export default Layout;
+export default DashboardLayout;

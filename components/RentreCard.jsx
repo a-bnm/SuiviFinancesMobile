@@ -4,11 +4,11 @@ import { router } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
 import axios from '../lib/axios'
 
-const CompteCard = ({ compte }) => {
+const RentreCard = ({ rentre }) => {
     const handleDelete = async () => {
-        await axios.delete(`/api/v1/comptes/${compte.id}`)
+        await axios.delete(`/api/v1/rentres/${rentre.id}`)
             .then((res) => {
-                router.push('/dashboard')
+                router.push('/dashboard/rentres')
             })
             .catch((err) => {
                 console.log(err)
@@ -20,7 +20,7 @@ const CompteCard = ({ compte }) => {
             <View className="w-full flex flex-row justify-between">
                 <View>
                     <Text className="col-span-2 font-bold text-3xl ">
-                        {compte.designation}
+                        {rentre.source}
                     </Text>
                 </View>
                 <View>
@@ -33,10 +33,10 @@ const CompteCard = ({ compte }) => {
             </View>
 
             <Text className="col-span-1 font-bold text-xl text-end mt-2">
-                Balance  {compte.montant.toLocaleString()} DA
+                Montant  {rentre.montant.toLocaleString()} DA
             </Text>
         </View>
     )
 }
 
-export default CompteCard
+export default RentreCard

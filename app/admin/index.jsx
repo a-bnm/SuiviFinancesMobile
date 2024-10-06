@@ -1,11 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import NavCard from '../../components/NavCard';
 
 const Index = () => {
     return (
-        <View>
-
-        </View>
+        <SafeAreaView>
+            <NavCard
+                titre="Comptes"
+                route="/admin/comptes"
+            />
+        </SafeAreaView>
     );
 }
 

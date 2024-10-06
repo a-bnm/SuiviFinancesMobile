@@ -4,21 +4,29 @@ import axios from '../../lib/axios'
 import CompteCard from '../../components/CompteCard'
 import { router, Link } from 'expo-router'
 
+import * as SecureStore from 'expo-secure-store';
 
 const index = () => {
     const [comptes, setComptes] = useState();
     const [spin, setSpin] = useState(false);
 
+
     const getComptes = async () => {
+        const token = SecureStore.getItem('token')
+
         setSpin(true);
         await axios
-            .get('/api/v1/comptes')
+            .get('/api/v1/comptes', {
+
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            })
             .then((res) => {
-                console.log(res.data.data)
                 setComptes(res.data.data)
             })
             .catch((err) => {
-                console.log(err)
                 throw err
             })
         setSpin(false);
@@ -29,11 +37,41 @@ const index = () => {
     }, []);
 
     return (
-        <View className="p-4">
+
+        <SafeAreaView className="p-4">
+            <View
+                className="w-full h-10 bg-[#4B66AF] mb-4 rounded-md"
+
+            >
+                <Link href="/dashboard/categories" className="text-center py-2 text-white font-bold">
+                    Catégories
+                </Link>
+            </View>
+            <View
+                className="w-full h-10 bg-[#4B66AF] mb-4 rounded-md"
+
+            >
+                <Link className="text-center py-2 text-white font-bold"
+                    href="/dashboard/achats"
+                >
+                    Achats
+                </Link>
+            </View>
+            <View
+                className="w-full h-10 bg-[#4B66AF] mb-4 rounded-md"
+
+            >
+                <Link className="text-center py-2 text-white font-bold"
+                    href="/dashboard/rentres"
+                >
+                    Rentres
+                </Link>
+            </View>
             {
+
                 comptes ?
                     (
-                        <SafeAreaView>
+                        <View className="p-0">
                             <View className="w-full flex flex-row border-b-2 border-gray-400 mb-4">
                                 <View className="w-2/3">
                                     <Text className="text-2xl font-bold">
@@ -56,7 +94,7 @@ const index = () => {
                                 renderItem={({ item }) => <CompteCard compte={item} />}
                                 keyExtractor={item => item.id}
                             />
-                        </SafeAreaView>
+                        </View >
                     ) : (
                         <ActivityIndicator
                             animating={spin}
@@ -66,7 +104,9 @@ const index = () => {
                     )
 
             }
-        </View >
+
+        </SafeAreaView >
+
     )
 }
 

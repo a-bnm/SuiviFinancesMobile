@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Platform } from 'react-native';
 import Input from "../../components/Input"
 import CustomButton from '../../components/CustomButton';
 import * as SecureStore from 'expo-secure-store';
 import axios from "../../lib/axios"
 
+import { router } from 'expo-router';
 
 const Login = () => {
 
@@ -12,7 +13,16 @@ const Login = () => {
     const [password, setPassword] = useState();
     const [error, setErrors] = useState([])
 
+
+    useEffect(() => {
+        const token = SecureStore.getItem('token')
+
+        if (token.startsWith('Bearer')) {
+            router.push('/dashboard')
+        }
+    })
     const handleSubmit = async () => {
+
         await axios
             .post('/api/sanctum/token', {
                 email: email,
@@ -20,6 +30,9 @@ const Login = () => {
                 device_name: Platform.OS + ' ' + Platform.Version,
             })
             .then(async (token) => {
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token.data}`
+
                 //Stockage du token
                 await SecureStore
                     .setItemAsync("token", token.data)
@@ -34,6 +47,7 @@ const Login = () => {
                 console.log(error)
                 return error
             })
+
 
     }
 
